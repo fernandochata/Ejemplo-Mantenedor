@@ -1,0 +1,722 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BD_EjercicioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="idCategoria" />
+          </Key>
+          <Property Name="idCategoria" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="idCiudad" />
+          </Key>
+          <Property Name="idCiudad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="rutCliente" />
+          </Key>
+          <Property Name="rutCliente" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="direccion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comuna">
+          <Key>
+            <PropertyRef Name="idComuna" />
+          </Key>
+          <Property Name="idComuna" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="ciudad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DetalleVenta">
+          <Key>
+            <PropertyRef Name="venta" />
+            <PropertyRef Name="producto" />
+          </Key>
+          <Property Name="venta" Type="int" Nullable="false" />
+          <Property Name="producto" Type="int" Nullable="false" />
+          <Property Name="precioVenta" Type="numeric" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="cantidad" Type="numeric" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="montoProducto" Type="numeric" Precision="15" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Direccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="calle" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="numero" Type="numeric" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="comuna" Type="int" Nullable="false" />
+          <Property Name="ciudad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="idProducto" />
+          </Key>
+          <Property Name="idProducto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="precio" Type="numeric" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="stock" Type="numeric" Precision="6" Scale="0" Nullable="false" />
+          <Property Name="proveedor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="categoria" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="rutProveedor" />
+          </Key>
+          <Property Name="rutProveedor" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="direccion" Type="int" />
+          <Property Name="telefono" Type="int" Nullable="false" />
+          <Property Name="paginaWeb" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Telefono">
+          <Key>
+            <PropertyRef Name="idTelefono" />
+          </Key>
+          <Property Name="idTelefono" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cliente" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="tipoTelefono" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="idVenta" />
+          </Key>
+          <Property Name="idVenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaHoraVenta" Type="datetime" Nullable="false" />
+          <Property Name="cliente" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="descuento" Type="numeric" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="montoVenta" Type="numeric" Precision="15" Scale="0" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Clientes_Direcciones">
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Direccion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="direccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comunas_Ciudades">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="1" />
+          <End Role="Comuna" Type="Self.Comuna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="idCiudad" />
+            </Principal>
+            <Dependent Role="Comuna">
+              <PropertyRef Name="ciudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallesVentas_Productos">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="idProducto" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallesVentas_Ventas">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="idVenta" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Direcciones_Ciudades">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="1" />
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="idCiudad" />
+            </Principal>
+            <Dependent Role="Direccion">
+              <PropertyRef Name="ciudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Direcciones_Comunas">
+          <End Role="Comuna" Type="Self.Comuna" Multiplicity="1" />
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comuna">
+              <PropertyRef Name="idComuna" />
+            </Principal>
+            <Dependent Role="Direccion">
+              <PropertyRef Name="comuna" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productos_Categorias">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="idCategoria" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productos_Proveedores">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="rutProveedor" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proveedores_Direcciones">
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="0..1" />
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Direccion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Proveedor">
+              <PropertyRef Name="direccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Telefono_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Telefono" Type="Self.Telefono" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="rutCliente" />
+            </Principal>
+            <Dependent Role="Telefono">
+              <PropertyRef Name="cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ventas_Clientes">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="rutCliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BD_EjercicioModelStoreContainer">
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comuna" EntityType="Self.Comuna" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DetalleVenta" EntityType="Self.DetalleVenta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Direccion" EntityType="Self.Direccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Telefono" EntityType="Self.Telefono" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Clientes_Direcciones" Association="Self.FK_Clientes_Direcciones">
+            <End Role="Direccion" EntitySet="Direccion" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comunas_Ciudades" Association="Self.FK_Comunas_Ciudades">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Comuna" EntitySet="Comuna" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallesVentas_Productos" Association="Self.FK_DetallesVentas_Productos">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallesVentas_Ventas" Association="Self.FK_DetallesVentas_Ventas">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Direcciones_Ciudades" Association="Self.FK_Direcciones_Ciudades">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Direccion" EntitySet="Direccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Direcciones_Comunas" Association="Self.FK_Direcciones_Comunas">
+            <End Role="Comuna" EntitySet="Comuna" />
+            <End Role="Direccion" EntitySet="Direccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productos_Categorias" Association="Self.FK_Productos_Categorias">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productos_Proveedores" Association="Self.FK_Productos_Proveedores">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proveedores_Direcciones" Association="Self.FK_Proveedores_Direcciones">
+            <End Role="Direccion" EntitySet="Direccion" />
+            <End Role="Proveedor" EntitySet="Proveedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Telefono_Cliente" Association="Self.FK_Telefono_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Telefono" EntitySet="Telefono" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ventas_Clientes" Association="Self.FK_Ventas_Clientes">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BD_EjercicioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Categoria">
+          <Key>
+            <PropertyRef Name="idCategoria" />
+          </Key>
+          <Property Name="idCategoria" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_Productos_Categorias" FromRole="Categoria" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="idCiudad" />
+          </Key>
+          <Property Name="idCiudad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Comuna" Relationship="Self.FK_Comunas_Ciudades" FromRole="Ciudad" ToRole="Comuna" />
+          <NavigationProperty Name="Direccion" Relationship="Self.FK_Direcciones_Ciudades" FromRole="Ciudad" ToRole="Direccion" />
+        </EntityType>
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="rutCliente" />
+          </Key>
+          <Property Name="rutCliente" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="direccion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Direccion1" Relationship="Self.FK_Clientes_Direcciones" FromRole="Cliente" ToRole="Direccion" />
+          <NavigationProperty Name="Telefono" Relationship="Self.FK_Telefono_Cliente" FromRole="Cliente" ToRole="Telefono" />
+          <NavigationProperty Name="Venta" Relationship="Self.FK_Ventas_Clientes" FromRole="Cliente" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Comuna">
+          <Key>
+            <PropertyRef Name="idComuna" />
+          </Key>
+          <Property Name="idComuna" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ciudad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ciudad1" Relationship="Self.FK_Comunas_Ciudades" FromRole="Comuna" ToRole="Ciudad" />
+          <NavigationProperty Name="Direccion" Relationship="Self.FK_Direcciones_Comunas" FromRole="Comuna" ToRole="Direccion" />
+        </EntityType>
+        <EntityType Name="DetalleVenta">
+          <Key>
+            <PropertyRef Name="venta" />
+            <PropertyRef Name="producto" />
+          </Key>
+          <Property Name="venta" Type="Int32" Nullable="false" />
+          <Property Name="producto" Type="Int32" Nullable="false" />
+          <Property Name="precioVenta" Type="Decimal" Precision="15" Scale="0" Nullable="false" />
+          <Property Name="cantidad" Type="Decimal" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="montoProducto" Type="Decimal" Precision="15" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Producto1" Relationship="Self.FK_DetallesVentas_Productos" FromRole="DetalleVenta" ToRole="Producto" />
+          <NavigationProperty Name="Venta1" Relationship="Self.FK_DetallesVentas_Ventas" FromRole="DetalleVenta" ToRole="Venta" />
+        </EntityType>
+        <EntityType Name="Direccion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="calle" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="numero" Type="Decimal" Precision="5" Scale="0" Nullable="false" />
+          <Property Name="comuna" Type="Int32" Nullable="false" />
+          <Property Name="ciudad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ciudad1" Relationship="Self.FK_Direcciones_Ciudades" FromRole="Direccion" ToRole="Ciudad" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Clientes_Direcciones" FromRole="Direccion" ToRole="Cliente" />
+          <NavigationProperty Name="Comuna1" Relationship="Self.FK_Direcciones_Comunas" FromRole="Direccion" ToRole="Comuna" />
+          <NavigationProperty Name="Proveedor" Relationship="Self.FK_Proveedores_Direcciones" FromRole="Direccion" ToRole="Proveedor" />
+        </EntityType>
+        <EntityType Name="Producto">
+          <Key>
+            <PropertyRef Name="idProducto" />
+          </Key>
+          <Property Name="idProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="precio" Type="Decimal" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="stock" Type="Decimal" Precision="6" Scale="0" Nullable="false" />
+          <Property Name="proveedor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="categoria" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Categoria1" Relationship="Self.FK_Productos_Categorias" FromRole="Producto" ToRole="Categoria" />
+          <NavigationProperty Name="DetalleVenta" Relationship="Self.FK_DetallesVentas_Productos" FromRole="Producto" ToRole="DetalleVenta" />
+          <NavigationProperty Name="Proveedor1" Relationship="Self.FK_Productos_Proveedores" FromRole="Producto" ToRole="Proveedor" />
+        </EntityType>
+        <EntityType Name="Proveedor">
+          <Key>
+            <PropertyRef Name="rutProveedor" />
+          </Key>
+          <Property Name="rutProveedor" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="direccion" Type="Int32" />
+          <Property Name="telefono" Type="Int32" Nullable="false" />
+          <Property Name="paginaWeb" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Direccion1" Relationship="Self.FK_Proveedores_Direcciones" FromRole="Proveedor" ToRole="Direccion" />
+          <NavigationProperty Name="Producto" Relationship="Self.FK_Productos_Proveedores" FromRole="Proveedor" ToRole="Producto" />
+        </EntityType>
+        <EntityType Name="Telefono">
+          <Key>
+            <PropertyRef Name="idTelefono" />
+          </Key>
+          <Property Name="idTelefono" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cliente" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tipoTelefono" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cliente1" Relationship="Self.FK_Telefono_Cliente" FromRole="Telefono" ToRole="Cliente" />
+        </EntityType>
+        <EntityType Name="Venta">
+          <Key>
+            <PropertyRef Name="idVenta" />
+          </Key>
+          <Property Name="idVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fechaHoraVenta" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="cliente" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="descuento" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+          <Property Name="montoVenta" Type="Decimal" Precision="15" Scale="0" Nullable="false" />
+          <NavigationProperty Name="Cliente1" Relationship="Self.FK_Ventas_Clientes" FromRole="Venta" ToRole="Cliente" />
+          <NavigationProperty Name="DetalleVenta" Relationship="Self.FK_DetallesVentas_Ventas" FromRole="Venta" ToRole="DetalleVenta" />
+        </EntityType>
+        <Association Name="FK_Productos_Categorias">
+          <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categoria">
+              <PropertyRef Name="idCategoria" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="categoria" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comunas_Ciudades">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="1" />
+          <End Role="Comuna" Type="Self.Comuna" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="idCiudad" />
+            </Principal>
+            <Dependent Role="Comuna">
+              <PropertyRef Name="ciudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Direcciones_Ciudades">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="1" />
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="idCiudad" />
+            </Principal>
+            <Dependent Role="Direccion">
+              <PropertyRef Name="ciudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Clientes_Direcciones">
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="1" />
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Direccion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Cliente">
+              <PropertyRef Name="direccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Telefono_Cliente">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Telefono" Type="Self.Telefono" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="rutCliente" />
+            </Principal>
+            <Dependent Role="Telefono">
+              <PropertyRef Name="cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ventas_Clientes">
+          <End Role="Cliente" Type="Self.Cliente" Multiplicity="1" />
+          <End Role="Venta" Type="Self.Venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cliente">
+              <PropertyRef Name="rutCliente" />
+            </Principal>
+            <Dependent Role="Venta">
+              <PropertyRef Name="cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Direcciones_Comunas">
+          <End Role="Comuna" Type="Self.Comuna" Multiplicity="1" />
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comuna">
+              <PropertyRef Name="idComuna" />
+            </Principal>
+            <Dependent Role="Direccion">
+              <PropertyRef Name="comuna" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallesVentas_Productos">
+          <End Role="Producto" Type="Self.Producto" Multiplicity="1" />
+          <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producto">
+              <PropertyRef Name="idProducto" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallesVentas_Ventas">
+          <End Role="Venta" Type="Self.Venta" Multiplicity="1" />
+          <End Role="DetalleVenta" Type="Self.DetalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venta">
+              <PropertyRef Name="idVenta" />
+            </Principal>
+            <Dependent Role="DetalleVenta">
+              <PropertyRef Name="venta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proveedores_Direcciones">
+          <End Role="Direccion" Type="Self.Direccion" Multiplicity="0..1" />
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Direccion">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Proveedor">
+              <PropertyRef Name="direccion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Productos_Proveedores">
+          <End Role="Proveedor" Type="Self.Proveedor" Multiplicity="1" />
+          <End Role="Producto" Type="Self.Producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proveedor">
+              <PropertyRef Name="rutProveedor" />
+            </Principal>
+            <Dependent Role="Producto">
+              <PropertyRef Name="proveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BD_EjercicioEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categoria" EntityType="Self.Categoria" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" />
+          <EntitySet Name="Cliente" EntityType="Self.Cliente" />
+          <EntitySet Name="Comuna" EntityType="Self.Comuna" />
+          <EntitySet Name="DetalleVenta" EntityType="Self.DetalleVenta" />
+          <EntitySet Name="Direccion" EntityType="Self.Direccion" />
+          <EntitySet Name="Producto" EntityType="Self.Producto" />
+          <EntitySet Name="Proveedor" EntityType="Self.Proveedor" />
+          <EntitySet Name="Telefono" EntityType="Self.Telefono" />
+          <EntitySet Name="Venta" EntityType="Self.Venta" />
+          <AssociationSet Name="FK_Productos_Categorias" Association="Self.FK_Productos_Categorias">
+            <End Role="Categoria" EntitySet="Categoria" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comunas_Ciudades" Association="Self.FK_Comunas_Ciudades">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Comuna" EntitySet="Comuna" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Direcciones_Ciudades" Association="Self.FK_Direcciones_Ciudades">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Direccion" EntitySet="Direccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Clientes_Direcciones" Association="Self.FK_Clientes_Direcciones">
+            <End Role="Direccion" EntitySet="Direccion" />
+            <End Role="Cliente" EntitySet="Cliente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Telefono_Cliente" Association="Self.FK_Telefono_Cliente">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Telefono" EntitySet="Telefono" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ventas_Clientes" Association="Self.FK_Ventas_Clientes">
+            <End Role="Cliente" EntitySet="Cliente" />
+            <End Role="Venta" EntitySet="Venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Direcciones_Comunas" Association="Self.FK_Direcciones_Comunas">
+            <End Role="Comuna" EntitySet="Comuna" />
+            <End Role="Direccion" EntitySet="Direccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallesVentas_Productos" Association="Self.FK_DetallesVentas_Productos">
+            <End Role="Producto" EntitySet="Producto" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallesVentas_Ventas" Association="Self.FK_DetallesVentas_Ventas">
+            <End Role="Venta" EntitySet="Venta" />
+            <End Role="DetalleVenta" EntitySet="DetalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proveedores_Direcciones" Association="Self.FK_Proveedores_Direcciones">
+            <End Role="Direccion" EntitySet="Direccion" />
+            <End Role="Proveedor" EntitySet="Proveedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Productos_Proveedores" Association="Self.FK_Productos_Proveedores">
+            <End Role="Proveedor" EntitySet="Proveedor" />
+            <End Role="Producto" EntitySet="Producto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BD_EjercicioModelStoreContainer" CdmEntityContainer="BD_EjercicioEntities">
+          <EntitySetMapping Name="Categoria">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Categoria">
+              <MappingFragment StoreEntitySet="Categoria">
+                <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciudad">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Ciudad">
+              <MappingFragment StoreEntitySet="Ciudad">
+                <ScalarProperty Name="idCiudad" ColumnName="idCiudad" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cliente">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Cliente">
+              <MappingFragment StoreEntitySet="Cliente">
+                <ScalarProperty Name="rutCliente" ColumnName="rutCliente" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comuna">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Comuna">
+              <MappingFragment StoreEntitySet="Comuna">
+                <ScalarProperty Name="idComuna" ColumnName="idComuna" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DetalleVenta">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.DetalleVenta">
+              <MappingFragment StoreEntitySet="DetalleVenta">
+                <ScalarProperty Name="venta" ColumnName="venta" />
+                <ScalarProperty Name="producto" ColumnName="producto" />
+                <ScalarProperty Name="precioVenta" ColumnName="precioVenta" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="montoProducto" ColumnName="montoProducto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Direccion">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Direccion">
+              <MappingFragment StoreEntitySet="Direccion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="calle" ColumnName="calle" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="comuna" ColumnName="comuna" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producto">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Producto">
+              <MappingFragment StoreEntitySet="Producto">
+                <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="stock" ColumnName="stock" />
+                <ScalarProperty Name="proveedor" ColumnName="proveedor" />
+                <ScalarProperty Name="categoria" ColumnName="categoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proveedor">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Proveedor">
+              <MappingFragment StoreEntitySet="Proveedor">
+                <ScalarProperty Name="rutProveedor" ColumnName="rutProveedor" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="paginaWeb" ColumnName="paginaWeb" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Telefono">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Telefono">
+              <MappingFragment StoreEntitySet="Telefono">
+                <ScalarProperty Name="idTelefono" ColumnName="idTelefono" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="tipoTelefono" ColumnName="tipoTelefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venta">
+            <EntityTypeMapping TypeName="BD_EjercicioModel.Venta">
+              <MappingFragment StoreEntitySet="Venta">
+                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+                <ScalarProperty Name="fechaHoraVenta" ColumnName="fechaHoraVenta" />
+                <ScalarProperty Name="cliente" ColumnName="cliente" />
+                <ScalarProperty Name="descuento" ColumnName="descuento" />
+                <ScalarProperty Name="montoVenta" ColumnName="montoVenta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

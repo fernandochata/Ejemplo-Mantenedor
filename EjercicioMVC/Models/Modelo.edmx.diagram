@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d86b88f236b04c1bb186e2ba217b5eaf" Name="Diagram1">
+        <EntityTypeShape EntityType="BD_EjercicioModel.Categoria" Width="1.5" PointX="7.5" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Ciudad" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Cliente" Width="1.5" PointX="7.5" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Comuna" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.DetalleVenta" Width="1.5" PointX="12" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Direccion" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Producto" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Proveedor" Width="1.5" PointX="7.5" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Telefono" Width="1.5" PointX="9.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BD_EjercicioModel.Venta" Width="1.5" PointX="9.75" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Productos_Categorias" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Comunas_Ciudades" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Direcciones_Ciudades" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Clientes_Direcciones" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Telefono_Cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Ventas_Clientes" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Direcciones_Comunas" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_DetallesVentas_Productos" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_DetallesVentas_Ventas" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Proveedores_Direcciones" ManuallyRouted="false" />
+        <AssociationConnector Association="BD_EjercicioModel.FK_Productos_Proveedores" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

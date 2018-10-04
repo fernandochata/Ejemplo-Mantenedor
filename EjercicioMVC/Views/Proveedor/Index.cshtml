@@ -1,0 +1,65 @@
+﻿@model IEnumerable<EjercicioMVC.Models.Proveedor>
+
+@{
+    ViewBag.Title = "Mantenedor de Proveedores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Agregar Proveedor", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.rutProveedor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.telefono)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.paginaWeb)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.rutProveedor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.telefono)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.paginaWeb)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { rutProveedor = item.rutProveedor }) |
+            @Html.ActionLink("Eliminar", "Delete", new { rutProveedor = item.rutProveedor }, new { @class = "sEliminar" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Index", "Home")
+</div>
+
+@section scripts{
+    <script>
+        $(".sEliminar").click(function (event) {
+            if (!confirm('Estás seguro de eliminar?') == false) {
+                event.preventDeafult();
+            }
+        });
+    </script>
+}
